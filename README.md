@@ -7,3 +7,8 @@ npm install express
 ```
 
 Use the default node package https to make requests to the API
+
+Install the body parser package
+```
+npm install body-parser
+```
