@@ -1,13 +1,27 @@
 const express = require("express");
 const https = require("https");
+const bodyParser = require("body-parser");
 
 const app = express();
 const port = 3000;
 
+//Necessary to parse through the body of the post request
+app.use(bodyParser.urlencoded({extended: true}));
+
 app.get('/', (req,res) => {
+    res.sendFile(__dirname + "/index.html")
+})
+
+app.post('/', (req, res) => {
+
+    //Get the city from the input
+    const query = req.body.cityName
+
+    const apiKey = "88e179463f383b58d2b3410eeed08041";
+    const unit = "metric";
 
     //API endpoint
-    const url = 'https://api.openweathermap.org/data/2.5/weather?q=Tijuana&appid=88e179463f383b58d2b3410eeed08041&units=metric';
+    const url = 'https://api.openweathermap.org/data/2.5/weather?q=' + query + '&appid=' + apiKey + '&units=' + unit;
 
     //Make get request and get the response
     https.get(url, (response) => {
@@ -34,7 +48,7 @@ app.get('/', (req,res) => {
 
             console.log(weatherData);
 
-            res.write("<h1>The temperature in Tijuana is " + temp + " degrees Celcus.</h1>");
+            res.write("<h1>The temperature in "+ query +" is " + temp + " degrees Celcius.</h1>");
             res.write("<h2>The weather is currently " + description + "</h2>");
 
             //Write image on page
